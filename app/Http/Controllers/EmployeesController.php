@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Employee;
 
 class EmployeesController extends Controller
@@ -30,10 +30,33 @@ class EmployeesController extends Controller
         return json_encode($employee);
     }
 
-    //Return employees by type
-    public function showEmployeeByJob(Request $request){
-        $employees = Employee::where('job', $job)->get();
-
-        return json_encode($employees);
+    public function create(Request $request)
+    {
+        $employee = Employee::create($request->all());
+        return response()->json($employee);
     }
+
+    public function update($id, Request $request)
+    {
+        $employee = Employee::findOrFail($id);
+        $employee->update($request->all());
+
+        return response()->json($employee);
+    }
+
+    public function delete($id)
+    {
+        $employee=Employee::find($id)->delete();
+        return response('Deleted Successfully');
+    }
+
+
+
+
+    // //Return employees by type
+    // public function showEmployeeByJob(Request $request){
+    //     $employees = Employee::where('job', $job)->get();
+
+    //     return json_encode($employees);
+    // }
 }
